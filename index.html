@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML5 Audio Player</title>
+    <link href="styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="audio-player">
+      <img id="album-art" src="" alt="Album Art" />
+      <audio id="audio" style="display: none"></audio>
+      <div>
+        <button id="prev">Previous</button>
+        <button id="play-pause">Play</button>
+        <button id="next">Next</button>
+      </div>
+      <input
+        type="range"
+        id="volume-control"
+        min="0"
+        max="1"
+        step="0.01"
+        value="1"
+      />
+      <input type="range" id="progress-bar" min="0" max="100" value="0" />
+    </div>
+
+    <script>
+      const audio = document.getElementById('audio');
+      const playPauseButton = document.getElementById('play-pause');
+      const prevButton = document.getElementById('prev');
+      const nextButton = document.getElementById('next');
+      const volumeControl = document.getElementById('volume-control');
+      const albumArt = document.getElementById('album-art');
+      const progressBar = document.getElementById('progress-bar');
+
+      const songs = [
+        {
+          src: 'song1.mp3', // Replace with your song paths
+          albumArt: 'album1.jpg', // Replace with your album art paths
+        },
+        {
+          src: 'song2.mp3',
+          albumArt: 'album2.jpg',
+        },
+        {
+          src: 'song3.mp3',
+          albumArt: 'album3.jpg',
+        },
+      ];
+
+      let currentSongIndex = 0;
+
+      function loadSong(index) {
+        audio.src = songs[index].src;
+        albumArt.src = songs[index].albumArt;
+        audio.load();
+      }
+
+      function playPauseAudio() {
+        if (audio.paused) {
+          audio.play();
+          playPauseButton.textContent = 'Pause';
+        } else {
+          audio.pause();
+          playPauseButton.textContent = 'Play';
+        }
+      }
+
+      function nextSong() {
+        currentSongIndex = (currentSongIndex + 1) % songs.length;
+        loadSong(currentSongIndex);
+        audio.play();
+        playPauseButton.textContent = 'Pause';
+      }
+
+      function prevSong() {
+        currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+        loadSong(currentSongIndex);
+        audio.play();
+        playPauseButton.textContent = 'Pause';
+      }
+
+      function changeVolume() {
+        audio.volume = volumeControl.value;
+      }
+
+      function updateProgressBar() {
+        const progress = (audio.currentTime / audio.duration) * 100;
+        progressBar.value = progress;
+      }
+
+      function seekAudio(event) {
+        const newTime = (event.target.value / 100) * audio.duration;
+        audio.currentTime = newTime;
+      }
+
+      // Initialize player
+      loadSong(currentSongIndex);
+
+      // Event listeners
+      playPauseButton.addEventListener('click', playPauseAudio);
+      nextButton.addEventListener('click', nextSong);
+      prevButton.addEventListener('click', prevSong);
+      volumeControl.addEventListener('input', changeVolume);
+      audio.addEventListener('timeupdate', updateProgressBar);
+      progressBar.addEventListener('input', seekAudio);
+
+      // Play the first song automatically on load
+      window.addEventListener('load', () => {
+        audio.play();
+        playPauseButton.textContent = 'Pause';
+      });
+    </script>
+  </body>
+</html>

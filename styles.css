@@ -1,0 +1,36 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  color: black;
+  background-color: white;
+}
+
+#audio-player {
+  width: 300px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#album-art {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 5px 10px;
+  margin: 5px;
+}
+
+input[type="range"] {
+  width: 100%;
+}
+
+#progress-bar {
+  width: 100%;
+  margin-top: 10px;
+}
